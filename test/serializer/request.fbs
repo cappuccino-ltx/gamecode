@@ -1,0 +1,27 @@
+
+// 包含共享的fbs文件
+include "shared.fbs";
+// 声明命名空间
+namespace test;
+// 定义结构
+// 有table struct enum union
+table request{
+    // 成员定义, 成员名称 : 类型;
+    // 每个成员有依次递增的id,所以如果有版本更迭,不需要的字段不能删除掉,要在之后添加
+    req_id: uint64;
+    status: Status;
+    message: string;
+    names: [string];
+}
+
+// 声明根类型,一个文件中,只能定义一个根类型
+root_type request;
+// 对于根类型,可以定义他的标识,
+// 这个标识是一个固定大小的标识,只能是4个字节,
+// 在序列化的时候会将这个标识紧跟对象之后写入缓冲区
+// 反序列化的时候,检查减缓冲区这四个字节,看看是否和预期的标识符是否匹配,是不是自己需要的消息类型
+file_identifier "requ";
+
+
+// 编译生成头文件
+// flatc -c request.fbs

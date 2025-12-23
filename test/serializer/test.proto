@@ -1,0 +1,11 @@
+
+syntax="proto3";
+
+package test;
+
+message User{
+    string name = 1;
+    int32 age = 2;
+};
+
+// protoc --cpp_out=. -I./ ./test.proto

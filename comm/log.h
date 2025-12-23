@@ -84,8 +84,7 @@ public:
         }
         ~OutStream() {
             quit = true;
-            cond.notify_all();
-            
+            task.quit();
             log_thread->join();
         }
 
@@ -97,8 +96,6 @@ public:
         bool quit = false;
         std::ofstream out;
         std::thread* log_thread = nullptr;
-        std::mutex _mtx;
-        std::condition_variable cond;
         lfree::ring_queue<std::string> task { lfree::queue_size::K05 };
     };
 
@@ -167,10 +164,10 @@ public:
         }
         
         template<class... Args>
-        void operator()(const std::string& fmt,Args&&... args) {
+        LogStream & operator()(const std::string& fmt,Args&&... args) {
             std::stringstream s(fmt);
             format(s,std::forward<Args>(args)...);
-            return ;
+            return *this;
         }
 
 

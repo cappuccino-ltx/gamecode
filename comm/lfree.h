@@ -58,10 +58,10 @@ protected:
 template<class T>
 class ring_queue : public base_queue{
 public:
-    ring_queue(std::size_t size = queue_size::K2)
+    ring_queue(std::size_t size = queue_size::K2, int try_count = DEFAULT_RETRY)
         :producer{ 0 }
         ,consumer{ 0 }
-        ,retry{ DEFAULT_RETRY }
+        ,retry{ try_count }
     {
         buff.resize(util::get_proper_size(size));
         sequence = new std::atomic<uint64_t>[buff.size()];
@@ -70,7 +70,7 @@ public:
         }
     }
     virtual ~ring_queue(){
-        run = false;
+        run.store(false,std::memory_order_release);
         p_cond.notify_all();
         c_cond.notify_all();
         // 等待所有线程结束
@@ -108,9 +108,9 @@ public:
                 p_cond.wait(lock, [&](){ return writable(); });
             }
         }
-        
     }
-    void get(T& out) {
+    
+    bool get(T& out) {
         int yield_count = 1;
         while(try_get(out) == false){
             if (readable()) {
@@ -124,9 +124,10 @@ public:
                 c_cond.wait(lock, [&](){return readable() || !run.load(std::memory_order_acquire); });
             }
             if(readable() == false && !run.load(std::memory_order_acquire) ){
-                return;
+                return false;
             }
         }
+        return true;
     }
     
 
@@ -156,6 +157,11 @@ public:
             return true;
         }
         return false;
+    }
+    void quit(){
+        run.store(false,std::memory_order_release);
+        p_cond.notify_all();
+        c_cond.notify_all();
     }
 
 protected:
@@ -254,13 +260,13 @@ private:
                     p_cond.notify_one();
                     return true;
                 }else {
+                    if (failed_try_get(out)){
+                        // 正确处理数据,直接返回
+                        p_cond.notify_one();
+                        return true;
+                    }
                     if (++retry_count == retry){
                         retry_count = 0;
-                        if (failed_try_get(out)){
-                            // 正确处理数据,直接返回
-                            p_cond.notify_one();
-                            return true;
-                        }
                         return false;
                     }
                 }
@@ -279,9 +285,6 @@ private:
     }
     
 protected:
-    void set_retry(int num) {
-        retry = num;
-    }
 
 protected:
     int retry;

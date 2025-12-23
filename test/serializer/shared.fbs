@@ -1,0 +1,12 @@
+
+namespace test;
+
+
+enum Status : short{
+    Success,
+    Failed,
+    InternalError
+}
+
+// 编译生成头文件
+// flatc -c shared.fbs
