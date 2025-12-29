@@ -1,0 +1,31 @@
+namespace io;
+
+table Command {
+    player_id: uint32;
+    tick: uint32;
+    move_x: int8;
+    move_y: int8;
+    attack: bool;
+    skill1: bool;
+    skill2: bool;
+}
+
+table FrameInputs {
+    tick: uint32;
+    commands: [Command];
+}
+
+table Entity {
+    entity_id: uint32;
+    x: float;
+    y: float;
+    vx: float;
+    vy: float;
+    hp: int32;
+    status_flags: uint32;
+}
+
+table Snapshot {
+    tick: uint32;
+    entities: [Entity];
+}

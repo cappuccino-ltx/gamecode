@@ -1,5 +1,5 @@
 
-#include "../../comm/enet.h"
+#include "../../src/comm/enet.h"
 #include <string>
 #include <thread>
 

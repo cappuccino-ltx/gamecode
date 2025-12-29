@@ -1,6 +1,6 @@
 
 
-#include "../comm/log.h"
+#include "../src/comm/log.h"
 
 int main() {
 
