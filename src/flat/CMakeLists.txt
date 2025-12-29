@@ -1,5 +1,6 @@
 
-set(flat_path ${CMAKE_SOURCE_DIR})
+set(flat_path ${CMAKE_CURRENT_LIST_DIR})
+
 # 获取所有的fbs文件,
 file(GLOB files "*.fbs")
 

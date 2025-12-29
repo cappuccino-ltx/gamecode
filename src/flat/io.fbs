@@ -10,22 +10,26 @@ table Command {
     skill2: bool;
 }
 
-table FrameInputs {
-    tick: uint32;
-    commands: [Command];
-}
 
 table Entity {
     entity_id: uint32;
+    hp: int32;
+    status_flags: uint32;
     x: float;
     y: float;
     vx: float;
     vy: float;
-    hp: int32;
-    status_flags: uint32;
 }
 
-table Snapshot {
+enum DataType : byte {
+    None = 0,
+    Entitys = 1,
+    Commands = 2
+}
+
+table Frame {
     tick: uint32;
+    type: DataType;
     entities: [Entity];
+    commands: [Command];
 }
