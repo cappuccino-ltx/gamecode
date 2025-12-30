@@ -10,4 +10,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src/comm)
 include_directories(${CMAKE_SOURCE_DIR}/src/flat)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/flat)
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/connect)
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/world)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/server)

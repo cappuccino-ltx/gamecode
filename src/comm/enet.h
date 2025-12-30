@@ -125,10 +125,16 @@ public:
         running.store(false,std::memory_order_release);
     }
 
+    bool try_read(std::shared_ptr<ENetData>* data){
+        return receives.try_get(*data);
+    }
     bool read(std::shared_ptr<ENetData>* data){
         return receives.get(*data);
     }
 
+    bool try_send(const std::shared_ptr<ENetData>& data){
+        return sends.try_put(data);
+    }
     void send(const std::shared_ptr<ENetData>& data){
         sends.put(data);
     }
