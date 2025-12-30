@@ -136,6 +136,9 @@ public:
     void disconnect(size_t sid){
         disconnectTask.put(sid);
     }
+    void setDisconnCallback(const std::function<void(uint32_t)>& back){
+        disconn_callback = back;
+    }
 
     ~ENetServer(){
         if (server){
@@ -174,6 +177,8 @@ private:
             ids.erase(id);
             return ;
         }
+        // 调用关闭连接的回调函数
+        if (disconn_callback) disconn_callback(id->second);
         peers.erase(pe);
         ids.erase(id);
     }
@@ -235,6 +240,7 @@ private:
     lfree::ring_queue<std::shared_ptr<ENetData>> receives{lfree::queue_size::K2};
     lfree::ring_queue<std::shared_ptr<ENetData>> sends{lfree::queue_size::K2};
     lfree::ring_queue<size_t> disconnectTask{lfree::queue_size::K003};
+    std::function<void(uint32_t)> disconn_callback;
 }; // class ENetServer
 enum Status{
     NotStarted,

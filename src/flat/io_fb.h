@@ -54,7 +54,7 @@ struct Command FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef CommandBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_PLAYER_ID = 4,
-    VT_TICK = 6,
+    VT_ROOM_ID = 6,
     VT_MOVE_X = 8,
     VT_MOVE_Y = 10,
     VT_ATTACK = 12,
@@ -64,8 +64,8 @@ struct Command FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   uint32_t player_id() const {
     return GetField<uint32_t>(VT_PLAYER_ID, 0);
   }
-  uint32_t tick() const {
-    return GetField<uint32_t>(VT_TICK, 0);
+  uint32_t room_id() const {
+    return GetField<uint32_t>(VT_ROOM_ID, 0);
   }
   int8_t move_x() const {
     return GetField<int8_t>(VT_MOVE_X, 0);
@@ -85,7 +85,7 @@ struct Command FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_PLAYER_ID) &&
-           VerifyField<uint32_t>(verifier, VT_TICK) &&
+           VerifyField<uint32_t>(verifier, VT_ROOM_ID) &&
            VerifyField<int8_t>(verifier, VT_MOVE_X) &&
            VerifyField<int8_t>(verifier, VT_MOVE_Y) &&
            VerifyField<uint8_t>(verifier, VT_ATTACK) &&
@@ -102,8 +102,8 @@ struct CommandBuilder {
   void add_player_id(uint32_t player_id) {
     fbb_.AddElement<uint32_t>(Command::VT_PLAYER_ID, player_id, 0);
   }
-  void add_tick(uint32_t tick) {
-    fbb_.AddElement<uint32_t>(Command::VT_TICK, tick, 0);
+  void add_room_id(uint32_t room_id) {
+    fbb_.AddElement<uint32_t>(Command::VT_ROOM_ID, room_id, 0);
   }
   void add_move_x(int8_t move_x) {
     fbb_.AddElement<int8_t>(Command::VT_MOVE_X, move_x, 0);
@@ -134,14 +134,14 @@ struct CommandBuilder {
 inline flatbuffers::Offset<Command> CreateCommand(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t player_id = 0,
-    uint32_t tick = 0,
+    uint32_t room_id = 0,
     int8_t move_x = 0,
     int8_t move_y = 0,
     bool attack = false,
     bool skill1 = false,
     bool skill2 = false) {
   CommandBuilder builder_(_fbb);
-  builder_.add_tick(tick);
+  builder_.add_room_id(room_id);
   builder_.add_player_id(player_id);
   builder_.add_skill2(skill2);
   builder_.add_skill1(skill1);
