@@ -1,0 +1,21 @@
+
+include "command.fbs";
+include "entity.fbs";
+namespace flat;
+
+
+enum DataType : byte {
+    None = 0,
+    Entitys = 1,
+    Commands = 2
+}
+
+table Frame {
+    tick: uint32;
+    type: DataType;
+    entities: [Entity];
+    commands: [Command];
+}
+
+root_type Frame;
+file_identifier "fram";

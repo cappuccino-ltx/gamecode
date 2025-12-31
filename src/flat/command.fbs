@@ -1,0 +1,14 @@
+namespace flat;
+
+table Command {
+    player_id: uint32;
+    room_id: uint32;
+    move_x: int8;
+    move_y: int8;
+    attack: bool;
+    skill1: bool;
+    skill2: bool;
+}
+
+root_type Command;
+file_identifier "comm";

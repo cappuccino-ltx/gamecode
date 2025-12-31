@@ -1,0 +1,17 @@
+namespace flat;
+
+table Entity {
+    entity_id: uint32;
+    hp: int32;
+    status_flags: uint32;
+    x: float;
+    y: float;
+    vx: float;
+    vy: float;
+    attack_cooldown: float;
+    skill1_cooldown: float;
+    skill2_colldown: float;
+}
+
+root_type Entity;
+file_identifier "enti";

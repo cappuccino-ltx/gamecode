@@ -8,6 +8,7 @@ project(game)
 
 include_directories(${CMAKE_SOURCE_DIR}/src/comm)
 include_directories(${CMAKE_SOURCE_DIR}/src/flat)
+include_directories(${CMAKE_SOURCE_DIR}/src/entity)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/flat)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/connect)
